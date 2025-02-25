@@ -1,9 +1,10 @@
-FROM maven:3.8.7-openjdk-17 AS build
+FROM maven:3.9.9-amazoncorretto-17-debian-bookworm AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+# Usar la imagen de Amazon Corretto 17 para la etapa de ejecución
+FROM amazoncorretto:17-alpine
 WORKDIR /app
 EXPOSE 8080
 COPY --from=build /app/target/DH_project-0.0.1-SNAPSHOT.jar app.jar
